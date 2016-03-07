@@ -13,6 +13,9 @@
 		EA3B59B11C8B2F1700F542C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA3B59AF1C8B2F1700F542C4 /* Main.storyboard */; };
 		EA3B59B31C8B2F1700F542C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA3B59B21C8B2F1700F542C4 /* Assets.xcassets */; };
 		EA3B59B61C8B2F1700F542C4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA3B59B41C8B2F1700F542C4 /* LaunchScreen.storyboard */; };
+		EA3B59BF1C8B2F6F00F542C4 /* PVAlgebraMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = EA3B59BE1C8B2F6F00F542C4 /* PVAlgebraMatrix.m */; };
+		EA3B59C61C8B41B600F542C4 /* PAMVacuumCleaner.m in Sources */ = {isa = PBXBuildFile; fileRef = EA3B59C51C8B41B600F542C4 /* PAMVacuumCleaner.m */; };
+		EAFAFBA21C8D7FF600EE91AA /* PAMMapRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFAFBA11C8D7FF600EE91AA /* PAMMapRoom.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,12 @@
 		EA3B59B21C8B2F1700F542C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EA3B59B51C8B2F1700F542C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EA3B59B71C8B2F1700F542C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EA3B59BD1C8B2F6F00F542C4 /* PVAlgebraMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PVAlgebraMatrix.h; sourceTree = "<group>"; };
+		EA3B59BE1C8B2F6F00F542C4 /* PVAlgebraMatrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PVAlgebraMatrix.m; sourceTree = "<group>"; };
+		EA3B59C41C8B41B600F542C4 /* PAMVacuumCleaner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAMVacuumCleaner.h; sourceTree = "<group>"; };
+		EA3B59C51C8B41B600F542C4 /* PAMVacuumCleaner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAMVacuumCleaner.m; sourceTree = "<group>"; };
+		EAFAFBA01C8D7FF600EE91AA /* PAMMapRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAMMapRoom.h; sourceTree = "<group>"; };
+		EAFAFBA11C8D7FF600EE91AA /* PAMMapRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAMMapRoom.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,14 +67,13 @@
 		EA3B59A51C8B2F1700F542C4 /* VacuumCleanerWorld */ = {
 			isa = PBXGroup;
 			children = (
-				EA3B59A91C8B2F1700F542C4 /* AppDelegate.h */,
-				EA3B59AA1C8B2F1700F542C4 /* AppDelegate.m */,
+				EAFAFBA01C8D7FF600EE91AA /* PAMMapRoom.h */,
+				EAFAFBA11C8D7FF600EE91AA /* PAMMapRoom.m */,
+				EA3B59C41C8B41B600F542C4 /* PAMVacuumCleaner.h */,
+				EA3B59C51C8B41B600F542C4 /* PAMVacuumCleaner.m */,
 				EA3B59AC1C8B2F1700F542C4 /* ViewController.h */,
 				EA3B59AD1C8B2F1700F542C4 /* ViewController.m */,
-				EA3B59AF1C8B2F1700F542C4 /* Main.storyboard */,
-				EA3B59B21C8B2F1700F542C4 /* Assets.xcassets */,
-				EA3B59B41C8B2F1700F542C4 /* LaunchScreen.storyboard */,
-				EA3B59B71C8B2F1700F542C4 /* Info.plist */,
+				EA3B59C31C8B390600F542C4 /* Storyboard */,
 				EA3B59A61C8B2F1700F542C4 /* Supporting Files */,
 			);
 			path = VacuumCleanerWorld;
@@ -74,9 +82,24 @@
 		EA3B59A61C8B2F1700F542C4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EA3B59A91C8B2F1700F542C4 /* AppDelegate.h */,
+				EA3B59AA1C8B2F1700F542C4 /* AppDelegate.m */,
+				EA3B59B21C8B2F1700F542C4 /* Assets.xcassets */,
+				EA3B59B71C8B2F1700F542C4 /* Info.plist */,
+				EA3B59BD1C8B2F6F00F542C4 /* PVAlgebraMatrix.h */,
+				EA3B59BE1C8B2F6F00F542C4 /* PVAlgebraMatrix.m */,
 				EA3B59A71C8B2F1700F542C4 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EA3B59C31C8B390600F542C4 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				EA3B59AF1C8B2F1700F542C4 /* Main.storyboard */,
+				EA3B59B41C8B2F1700F542C4 /* LaunchScreen.storyboard */,
+			);
+			name = Storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -149,9 +172,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA3B59C61C8B41B600F542C4 /* PAMVacuumCleaner.m in Sources */,
 				EA3B59AE1C8B2F1700F542C4 /* ViewController.m in Sources */,
+				EA3B59BF1C8B2F6F00F542C4 /* PVAlgebraMatrix.m in Sources */,
 				EA3B59AB1C8B2F1700F542C4 /* AppDelegate.m in Sources */,
 				EA3B59A81C8B2F1700F542C4 /* main.m in Sources */,
+				EAFAFBA21C8D7FF600EE91AA /* PAMMapRoom.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +326,7 @@
 				EA3B59BC1C8B2F1700F542C4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
