@@ -22,7 +22,7 @@ typedef enum : NSUInteger {
 @interface PAMVacuumCleaner : UIView
 
 @property(assign, nonatomic) CGRect beginPosition;
-@property(strong, nonatomic) PVAlgebraMatrix *matrixMapRoom;
+@property(strong, nonatomic) PVAlgebraMatrix *virtualMapRoom;
 
 - (int)randomMove;
 - (void)startVacuumCleanerBy:(PAMMapRoom*) mapRoom;

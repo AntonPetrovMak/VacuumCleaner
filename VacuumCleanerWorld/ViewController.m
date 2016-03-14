@@ -17,60 +17,54 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.mapRoom =[PAMMapRoom new];
-    NSLog(@"%@",self.mapRoom.matrixWithBarrier);
+    NSLog(@"%@",self.mapRoom.mapRoomMatrix);
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     self.vacuumCleaner.beginPosition = self.vacuumCleaner.frame;
     [self createMapWithBarrier];
+    [self.mapView bringSubviewToFront:self.vacuumCleaner];
 }
 
 - (void)createMapWithBarrier {
-    for (int i = 1; i <= self.mapRoom.matrixWithBarrier.numberOfColumns; i++) {
-        for (int j = 1; j <= self.mapRoom.matrixWithBarrier.numberOfRows; j++) {
-            if([[self.mapRoom.matrixWithBarrier elementAtRow:i column:j] isEqualToNumber:@1]) {
+    for (int i = 1; i <= self.mapRoom.mapRoomMatrix.numberOfColumns; i++) {
+        for (int j = 1; j <= self.mapRoom.mapRoomMatrix.numberOfRows; j++) {
+            if([[self.mapRoom.mapRoomMatrix elementAtRow:i column:j] isEqualToNumber:@(-1)]) {
                 UIView *view = [[UIView alloc] initWithFrame:CGRectMake(60*(j-1), 60*(i-1), 60, 60)];
                 [view setBackgroundColor:[UIColor brownColor]];
+                [self.mapView addSubview:view];
+            } else if ([[self.mapRoom.mapRoomMatrix elementAtRow:i column:j] intValue] > 0) {
+                UIView *view = [[UIView alloc] initWithFrame:CGRectMake(60*(j-1), 60*(i-1), 60, 60)];
+                float alpha = [[self.mapRoom.mapRoomMatrix elementAtRow:i column:j] floatValue]/10;
+                [view setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha: alpha]];
                 [self.mapView addSubview:view];
             }
         }
     }
 }
-
-- (void)createMapWithDirt {
-    for (int i = 1; i <= self.mapRoom.matrixWithBarrier.numberOfColumns; i++) {
-        for (int j = 1; j <= self.mapRoom.matrixWithBarrier.numberOfRows; j++) {
-            if([[self.mapRoom.matrixWithBarrier elementAtRow:i column:j] isEqualToNumber:@1]) {
-                UIView *view = [[UIView alloc] initWithFrame:CGRectMake(60*(j-1), 60*(i-1), 60, 60)];
-                [view setBackgroundColor:[UIColor brownColor]];
-                [self.mapView addSubview:view];
-            }
-        }
-    }
-}
-
 - (void)moveVacuumCleaner {
     __weak ViewController *weakSelf = self;
-    
     [UIView animateWithDuration:0.3
-                          delay:0
-                        options: UIViewAnimationOptionCurveLinear
-                     animations:^{
-                         //[weakSelf.vacuumCleaner startVacuumCleanerBy:weakSelf.mapRoom];
-                         [weakSelf.vacuumCleaner startSmartVacuumCleanerBy:weakSelf.mapRoom];
+                      delay:0
+                    options: UIViewAnimationOptionCurveLinear
+                 animations:^{
+                     //[weakSelf.vacuumCleaner startVacuumCleanerBy:weakSelf.mapRoom];
+                     [weakSelf.vacuumCleaner startSmartVacuumCleanerBy:weakSelf.mapRoom];
+                 }
+                 completion:^(BOOL finished) {
+                     if(finished) {
+                         //[weakSelf moveVacuumCleaner];
                      }
-                     completion:^(BOOL finished) {
-                         if(finished) {
-                             [weakSelf moveVacuumCleaner];
-                         }
-                     }];
+                 }];
 }
 
 
 #pragma makr - Action
 - (IBAction)actionStartButton:(UIButton *)sender {
+    self.vacuumCleaner.virtualMapRoom = [[PVAlgebraMatrix alloc]initWithRows:12 columns:12 setDefaultValueForAllElements:0];
     [self moveVacuumCleaner];
 }
 

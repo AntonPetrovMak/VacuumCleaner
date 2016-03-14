@@ -11,7 +11,6 @@
 
 @interface PAMMapRoom : NSObject
 
-@property(strong, nonatomic) PVAlgebraMatrix *matrixWithBarrier;
-@property(strong, nonatomic) PVAlgebraMatrix *matrixWithDirt;
+@property(strong, nonatomic) PVAlgebraMatrix *mapRoomMatrix;
 
 @end
