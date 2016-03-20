@@ -19,10 +19,21 @@ typedef enum : NSUInteger {
     PAMVacuumCleanerSuck    = 5
 } PAMVacuumCleanerState;
 
+
+typedef enum : NSUInteger {
+    PAMRotateUp     = 0,
+    PAMRotateRight  = 90,
+    PAMRotateDown   = 180,
+    PAMRotateLeft   = -90
+} PAMRotate;
+
 @interface PAMVacuumCleaner : UIView
 
 @property(assign, nonatomic) CGRect beginPosition;
 @property(strong, nonatomic) PVAlgebraMatrix *virtualMapRoom;
+
+@property(assign, nonatomic) CGPoint lastPoint;
+@property(assign, nonatomic) CGPoint currentPoint;
 
 - (int)randomMove;
 - (void)startVacuumCleanerBy:(PAMMapRoom*) mapRoom;

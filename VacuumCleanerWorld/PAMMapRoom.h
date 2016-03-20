@@ -7,10 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "PVAlgebraMatrix.h"
 
 @interface PAMMapRoom : NSObject
 
+@property(strong, nonatomic) UIView *mapView;
 @property(strong, nonatomic) PVAlgebraMatrix *mapRoomMatrix;
+@property(strong, nonatomic) PVAlgebraMatrix *mapDirtMatrix;
 
 @end

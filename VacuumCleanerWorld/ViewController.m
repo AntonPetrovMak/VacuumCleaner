@@ -11,6 +11,8 @@
 
 @interface ViewController ()
 
+@property(assign, nonatomic) int time;
+
 @end
 
 @implementation ViewController
@@ -19,13 +21,19 @@
     [super viewDidLoad];
     
     self.mapRoom =[PAMMapRoom new];
-    NSLog(@"%@",self.mapRoom.mapRoomMatrix);
+    self.mapRoom.mapView = self.mapView;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     self.vacuumCleaner.beginPosition = self.vacuumCleaner.frame;
+    self.vacuumCleaner.virtualMapRoom = [[PVAlgebraMatrix alloc]initWithRows:3 columns:3 setDefaultValueForAllElements:0];
+    self.vacuumCleaner.lastPoint = CGPointMake(1, 2);
+    self.vacuumCleaner.currentPoint = CGPointMake(2, 2);
+    self.time = 0;
+
     [self createMapWithBarrier];
+    NSLog(@"%@",self.mapRoom.mapRoomMatrix);
     [self.mapView bringSubviewToFront:self.vacuumCleaner];
 }
 
@@ -40,31 +48,37 @@
                 UIView *view = [[UIView alloc] initWithFrame:CGRectMake(60*(j-1), 60*(i-1), 60, 60)];
                 float alpha = [[self.mapRoom.mapRoomMatrix elementAtRow:i column:j] floatValue]/10;
                 [view setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha: alpha]];
+                [self.mapRoom.mapDirtMatrix replaceElementAtRow:i column:j withElement:view];
                 [self.mapView addSubview:view];
             }
         }
     }
 }
+
 - (void)moveVacuumCleaner {
     __weak ViewController *weakSelf = self;
-    [UIView animateWithDuration:0.3
-                      delay:0
-                    options: UIViewAnimationOptionCurveLinear
-                 animations:^{
-                     //[weakSelf.vacuumCleaner startVacuumCleanerBy:weakSelf.mapRoom];
-                     [weakSelf.vacuumCleaner startSmartVacuumCleanerBy:weakSelf.mapRoom];
-                 }
-                 completion:^(BOOL finished) {
-                     if(finished) {
-                         //[weakSelf moveVacuumCleaner];
-                     }
-                 }];
+    
+    [weakSelf.vacuumCleaner startSmartVacuumCleanerBy:weakSelf.mapRoom];
+//    [UIView animateWithDuration:0.3
+//                          delay:0
+//                        options: UIViewAnimationOptionCurveLinear
+//                     animations:^{
+//                         //[weakSelf.vacuumCleaner startVacuumCleanerBy:weakSelf.mapRoom];
+//                         [weakSelf.vacuumCleaner startSmartVacuumCleanerBy:weakSelf.mapRoom];
+//                     }
+//                     completion:^(BOOL finished) {
+//                         if(finished && self.time < 10) {
+//                             self.time++;
+//                             [weakSelf moveVacuumCleaner];
+//                         }
+//                     }];
+    
 }
 
 
 #pragma makr - Action
 - (IBAction)actionStartButton:(UIButton *)sender {
-    self.vacuumCleaner.virtualMapRoom = [[PVAlgebraMatrix alloc]initWithRows:12 columns:12 setDefaultValueForAllElements:0];
+    self.time = 0;
     [self moveVacuumCleaner];
 }
 

@@ -23,6 +23,7 @@
 
 - (void) standrtMapRoomMatrix {
     self.mapRoomMatrix = [[PVAlgebraMatrix alloc] initWithRows:12 columns:12 setDefaultValueForAllElements:0];
+    self.mapDirtMatrix = [[PVAlgebraMatrix alloc] initWithRows:12 columns:12 setDefaultValueForAllElements:0];
     [self.mapRoomMatrix replaceElementAtRow:10  column:4 withElement:@(-1)];
     [self.mapRoomMatrix replaceElementAtRow:6   column:7 withElement:@(-1)];
     [self.mapRoomMatrix replaceElementAtRow:9   column:11 withElement:@(-1)];
@@ -49,6 +50,8 @@
     [self.mapRoomMatrix replaceElementAtRow:4 column:11 withElement:@(-1)];
     [self.mapRoomMatrix replaceElementAtRow:8 column:7 withElement:@(-1)];
     
+    [self.mapRoomMatrix replaceElementAtRow:3 column:1 withElement:@(4)];
+    [self.mapRoomMatrix replaceElementAtRow:3 column:2 withElement:@(4)];
     [self.mapRoomMatrix replaceElementAtRow:2 column:12 withElement:@(4)];
     [self.mapRoomMatrix replaceElementAtRow:3 column:9 withElement:@(1)];
     [self.mapRoomMatrix replaceElementAtRow:12 column:4 withElement:@(4)];

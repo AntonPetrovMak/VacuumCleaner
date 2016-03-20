@@ -299,7 +299,7 @@
 
 - (void)insertNewColumn:(NSArray *)newColumn atColumn:(NSInteger)columnNumber {
     if (columnNumber >= 1 && columnNumber <= _matrixColumns){
-        
+
         for (int m = 0; m < _matrixRows; m++){
             
             for (NSInteger n = _matrixColumns; n >= columnNumber-1; n--){

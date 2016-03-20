@@ -73,7 +73,7 @@
                                         <color key="backgroundColor" red="0.15686274510000001" green="0.51764705879999995" blue="0.68627450980000004" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.61716110311490913" green="0.84160995525052928" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.61716110310000005" green="0.84160995530000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="720" id="5Kx-pr-r2A"/>
                                     <constraint firstAttribute="height" constant="720" id="a6o-Av-vbk"/>

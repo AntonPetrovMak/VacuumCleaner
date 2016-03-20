@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "PVAlgebraMatrix.h"
 
 @interface AppDelegate ()
 
@@ -16,6 +17,13 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+//    PVAlgebraMatrix *matrix = [[PVAlgebraMatrix alloc] initWithRows:3 columns:3 setDefaultValueForAllElements:2];
+//    NSLog(@"%@", matrix);
+//    NSArray *array = [[NSArray alloc] initWithObjects:@0, @0, @0, nil];
+//    [matrix insertNewRow: array atRow:3];
+//    NSArray *columnRow = [matrix elementsFromColumn:3];
+//    [matrix addColumnFromArray:columnRow];
+//    NSLog(@"%@", matrix);
     
     return YES;
 }
