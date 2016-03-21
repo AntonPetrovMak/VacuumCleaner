@@ -22,7 +22,7 @@
     [super viewDidLoad];
     self.mapRoom = [PAMMapRoom new];
     self.mapRoom.mapView = self.mapView;
-    self.time = 20;
+    self.vacuumCleaner.delegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -30,7 +30,8 @@
     
     [self createMapWithBarrier];
     [self createMapWithDirty];
-    NSLog(@"%@",self.mapRoom.mapRoomMatrix);
+    self.vacuumCleaner.beginPosition = self.vacuumCleaner.frame;
+    //NSLog(@"%@",self.mapRoom.mapRoomMatrix);
 }
 
 - (void)createMapWithBarrier {
@@ -61,19 +62,19 @@
     [self.mapView bringSubviewToFront:self.vacuumCleaner];
 }
 
+- (void)modeVacuumCleanerWorks{
+    self.barrierButton.userInteractionEnabled = !self.barrierButton.userInteractionEnabled;
+    self.dityButton.userInteractionEnabled = !self.dityButton.userInteractionEnabled;
+    self.energySlider.userInteractionEnabled = !self.energySlider.userInteractionEnabled;
+    self.speedSlider.userInteractionEnabled = !self.speedSlider.userInteractionEnabled;
+    self.startButton.userInteractionEnabled = !self.startButton.userInteractionEnabled;
+}
+
+
 - (void)moveVacuumCleaner {
     self.time --;
     if(!self.time) {
-        [self.timer invalidate];
-        [self.vacuumCleaner.layer removeAllAnimations];
-        [UIView animateWithDuration:0.3
-                              delay:0
-                            options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState
-                         animations:^{
-                             self.vacuumCleaner.transform = CGAffineTransformIdentity;
-                             self.vacuumCleaner.frame = self.vacuumCleaner.beginPosition;
-                         }
-                         completion:nil];
+        [self actionStopButton:self.stopButton];
     } else {
         __weak ViewController *weakSelf = self;
         [weakSelf.vacuumCleaner startSmartVacuumCleanerBy:weakSelf.mapRoom];
@@ -83,24 +84,36 @@
 
 #pragma makr - Action
 - (IBAction)actionChangeEnergy:(UISlider *)sender {
-    
+    self.vacuumCleaner.energy = sender.value;
+    self.initialEnergyLabel.text = [NSString stringWithFormat:@"Energy: %.0f",sender.value];
+    self.residualEnergyLabel.text = [NSString stringWithFormat:@"Residual energy: %.0f",sender.value];
 }
 
 - (IBAction)actionChangeSpeed:(UISlider *)sender {
-    
+    self.vacuumCleaner.speed = sender.value/2;
+    self.speedLabel.text = [NSString stringWithFormat:@"Speed: %f c", sender.value];
 }
 
 - (IBAction)actionStartButton:(UIButton *)sender {
-    self.time = 20;
-    self.vacuumCleaner.beginPosition = self.vacuumCleaner.frame;
+    [self modeVacuumCleanerWorks];
+    self.time = self.energySlider.value;
     self.vacuumCleaner.virtualMapRoom = [[PVAlgebraMatrix alloc]initWithRows:3 columns:3 setDefaultValueForAllElements:0];
     self.vacuumCleaner.lastPoint = CGPointMake(2, 2);
     self.vacuumCleaner.currentPoint = CGPointMake(2, 2);
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(moveVacuumCleaner) userInfo:nil repeats:YES];
+    self.vacuumCleaner.degreeDirt = 0;
+    self.vacuumCleaner.energy = self.energySlider.value;
+    self.vacuumCleaner.speed = self.speedSlider.value;
+    
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:self.vacuumCleaner.speed * 2
+                                                  target:self
+                                                selector:@selector(moveVacuumCleaner)
+                                                userInfo:nil
+                                                 repeats:YES];
     [self.timer fire];
 }
 
 - (IBAction)actionStopButton:(UIButton *)sender {
+    [self modeVacuumCleanerWorks];
     [self.timer invalidate];
     [self.vacuumCleaner.layer removeAllAnimations];
     [UIView animateWithDuration:0.3
@@ -138,4 +151,11 @@
     [self createMapWithDirty];
     
 }
+
+#pragma mark - PAMVacuumCleanerInfo
+- (void) vacuumCleanerEnergy:(NSNumber *) energy degreeDirt:(NSNumber *) degreeDirt {
+    self.residualEnergyLabel.text = [NSString stringWithFormat:@"Residual energy: %d", [energy integerValue]];
+    self.degreeDirtLabel.text = [NSString stringWithFormat:@"Degree dirt: %d", [degreeDirt integerValue]];
+}
+
 @end

@@ -18,11 +18,20 @@ typedef enum : NSUInteger {
     PAMVacuumCleanerRight   = 4
 } PAMVacuumCleanerState;
 
+@protocol PAMVacuumCleanerDelegate <NSObject>
+@optional
+- (void) vacuumCleanerEnergy:(NSNumber *) energy degreeDirt:(NSNumber *) degreeDirt;
+@end
+
 
 @interface PAMVacuumCleaner : UIView
 
+@property(weak, nonatomic) id <PAMVacuumCleanerDelegate> delegate;
 
 @property(assign, nonatomic) double speed;
+@property(assign, nonatomic) NSInteger degreeDirt;
+@property(assign, nonatomic) NSInteger energy;
+
 @property(assign, nonatomic) CGRect beginPosition;
 @property(strong, nonatomic) PVAlgebraMatrix *virtualMapRoom;
 

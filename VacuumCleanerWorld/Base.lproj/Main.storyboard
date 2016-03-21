@@ -21,7 +21,7 @@
                                 <rect key="frame" x="720" y="20" width="304" height="748"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dj9-fm-icL">
-                                        <rect key="frame" x="10" y="40" width="140" height="36"/>
+                                        <rect key="frame" x="12" y="268" width="140" height="36"/>
                                         <color key="backgroundColor" red="0.54901960780000003" green="0.72941176470000002" blue="0.1137254902" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <state key="normal" title="Start">
@@ -32,7 +32,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C9k-Bq-iR6">
-                                        <rect key="frame" x="158" y="40" width="136" height="36"/>
+                                        <rect key="frame" x="160" y="268" width="136" height="36"/>
                                         <color key="backgroundColor" red="0.92549019610000005" green="0.2784313725" blue="0.074509803920000006" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <state key="normal" title="Stop">
@@ -42,53 +42,47 @@
                                             <action selector="actionStopButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="m9I-Lf-JZX"/>
                                         </connections>
                                     </button>
-                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="ILi-Gv-AYG">
-                                        <rect key="frame" x="8" y="230" width="288" height="31"/>
-                                        <connections>
-                                            <action selector="actionChangeSpeed:" destination="BYZ-38-t0r" eventType="valueChanged" id="r43-VA-n6N"/>
-                                        </connections>
-                                    </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Speed: 0.5 c" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TZw-fk-aJH">
-                                        <rect key="frame" x="10" y="197" width="284" height="37"/>
+                                        <rect key="frame" x="14" y="113" width="284" height="37"/>
                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Smart vacuum cleaner" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fcu-5H-vH6">
-                                        <rect key="frame" x="8" y="144" width="210" height="37"/>
+                                        <rect key="frame" x="12" y="60" width="210" height="37"/>
                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Energy: 1000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X6C-cv-Kiv">
-                                        <rect key="frame" x="8" y="345" width="284" height="37"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Residual energy: 10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X6C-cv-Kiv">
+                                        <rect key="frame" x="14" y="349" width="284" height="37"/>
                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Degree dirt: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OID-Db-vLJ">
-                                        <rect key="frame" x="10" y="382" width="284" height="37"/>
+                                        <rect key="frame" x="16" y="386" width="284" height="37"/>
                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1000" minValue="100" maxValue="2000" translatesAutoresizingMaskIntoConstraints="NO" id="cBv-lg-ed8">
-                                        <rect key="frame" x="8" y="299" width="288" height="31"/>
+                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minValue="10" maxValue="2000" translatesAutoresizingMaskIntoConstraints="NO" id="cBv-lg-ed8">
+                                        <rect key="frame" x="12" y="215" width="288" height="31"/>
                                         <connections>
                                             <action selector="actionChangeEnergy:" destination="BYZ-38-t0r" eventType="valueChanged" id="GZ0-8F-FIu"/>
                                         </connections>
                                     </slider>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Energy: 1000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VI4-nu-47t">
-                                        <rect key="frame" x="8" y="268" width="284" height="37"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Energy: 10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VI4-nu-47t">
+                                        <rect key="frame" x="12" y="184" width="284" height="37"/>
                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3MC-kJ-OM0">
-                                        <rect key="frame" x="243" y="144" width="51" height="31"/>
+                                        <rect key="frame" x="247" y="60" width="51" height="31"/>
                                     </switch>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E97-jC-2sG">
-                                        <rect key="frame" x="10" y="84" width="140" height="36"/>
+                                        <rect key="frame" x="12" y="8" width="140" height="36"/>
                                         <color key="backgroundColor" red="0.60000002384185791" green="0.40000000596046448" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <state key="normal" title="Barrier">
@@ -99,7 +93,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nli-oM-xJW">
-                                        <rect key="frame" x="158" y="84" width="136" height="36"/>
+                                        <rect key="frame" x="160" y="8" width="136" height="36"/>
                                         <color key="backgroundColor" red="0.47208412247474751" green="0.47208412247474751" blue="0.47208412247474751" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <state key="normal" title="Dirt">
@@ -109,6 +103,12 @@
                                             <action selector="actionRandomDirt:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RlA-cT-Sq9"/>
                                         </connections>
                                     </button>
+                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="9.9999999999999995e-07" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="ILi-Gv-AYG">
+                                        <rect key="frame" x="10" y="146" width="288" height="31"/>
+                                        <connections>
+                                            <action selector="actionChangeSpeed:" destination="BYZ-38-t0r" eventType="valueChanged" id="r43-VA-n6N"/>
+                                        </connections>
+                                    </slider>
                                 </subviews>
                                 <color key="backgroundColor" red="0.2666666667" green="0.28627450980000002" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -126,12 +126,22 @@
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="niN-hI-fLQ" userLabel="VacuumCleaner" customClass="PAMVacuumCleaner">
                                         <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="arrow" translatesAutoresizingMaskIntoConstraints="NO" id="rcj-LQ-BqQ">
-                                                <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="arrow" translatesAutoresizingMaskIntoConstraints="NO" id="rcj-LQ-BqQ">
+                                                <rect key="frame" x="1" y="1" width="58" height="58"/>
                                                 <color key="backgroundColor" red="0.92549019610000005" green="0.2784313725" blue="0.074509803920000006" alpha="1" colorSpace="calibratedRGB"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="self.layer.cornerRadius">
+                                                        <integer key="value" value="30"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </imageView>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.15686274510000001" green="0.51764705879999995" blue="0.68627450980000004" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="self.layer.cornerRadius">
+                                                <integer key="value" value="30"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.61716110310000005" green="0.84160995530000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -155,14 +165,16 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>
+                        <outlet property="barrierButton" destination="E97-jC-2sG" id="ANx-ab-Neg"/>
                         <outlet property="degreeDirtLabel" destination="OID-Db-vLJ" id="vs9-ma-fZ5"/>
+                        <outlet property="dityButton" destination="nli-oM-xJW" id="Dja-Ry-GpJ"/>
                         <outlet property="energySlider" destination="cBv-lg-ed8" id="Cy4-eT-Wf3"/>
                         <outlet property="initialEnergyLabel" destination="VI4-nu-47t" id="KuE-hT-hYs"/>
                         <outlet property="isSmartVCSwitch" destination="3MC-kJ-OM0" id="YwW-wP-DgE"/>
                         <outlet property="mapView" destination="ALZ-Vz-sxG" id="BFh-lK-sP4"/>
+                        <outlet property="residualEnergyLabel" destination="X6C-cv-Kiv" id="Dap-nf-QVh"/>
                         <outlet property="speedLabel" destination="TZw-fk-aJH" id="bFI-5D-6zy"/>
                         <outlet property="speedSlider" destination="ILi-Gv-AYG" id="8kZ-7y-QFy"/>
-                        <outlet property="spentEnergyLabel" destination="X6C-cv-Kiv" id="SVv-yH-71Y"/>
                         <outlet property="startButton" destination="Dj9-fm-icL" id="K4X-3O-2yJ"/>
                         <outlet property="stopButton" destination="C9k-Bq-iR6" id="rXo-3b-1on"/>
                         <outlet property="vacuumCleaner" destination="niN-hI-fLQ" id="U4f-OO-kA7"/>

@@ -12,7 +12,7 @@
 
 - (int)randomMove {
     int move = (int)arc4random_uniform(4) + 1;
-    NSLog(@"Move: %d", move);
+    //NSLog(@"Move: %d", move);
     switch (move) {
         case (PAMVacuumCleanerFront | PAMVacuumCleanerRight):
             return 1;
@@ -29,15 +29,19 @@
 - (NSArray *)checkArea:(PAMMapRoom*) environmentMap {
     NSInteger degreeDirt = [[environmentMap.mapRoomMatrix elementAtRow:self.currentPoint.x - 1 column:self.currentPoint.y - 1] integerValue];
     if (degreeDirt > 0) {
+        self.backgroundColor = [UIColor greenColor];
         if(!(degreeDirt - 1)) {
             for (UIView *view in [environmentMap.mapView subviews]) {
                 UIView *dirtView = (UIView *)[environmentMap.mapDirtMatrix elementAtRow: self.currentPoint.x - 1 column:self.currentPoint.y - 1];
                 if([view isEqual:dirtView]) {
                     [dirtView setBackgroundColor:[UIColor colorWithRed:157/255.f green:215/255.f blue:255/255.f alpha:1]];
+                    self.backgroundColor = [UIColor blackColor];
                 }
             }
         }
         [environmentMap.mapRoomMatrix replaceElementAtRow:self.currentPoint.x - 1 column:self.currentPoint.y - 1 withElement:@(degreeDirt - 1)];
+        self.degreeDirt++;
+        self.energy--;
         return nil;
     } else {
         NSMutableArray *array = [NSMutableArray new];
@@ -46,12 +50,13 @@
                 [array addObject:@(i)];
             }
         }
+        self.energy--;
         return array;
     }
     
 }
 
--(void)insertRowToVirtualMatrix:(NSInteger) value position:(NSInteger) position {
+- (void)insertRowToVirtualMatrix:(NSInteger) value position:(NSInteger) position {
     NSMutableArray *array = [[NSMutableArray alloc] init];
     for (int i = 0; i < value; i++) {
         [array addObject:@0];
@@ -67,7 +72,7 @@
     
 }
 
--(void)insertColumnVirtualMatrix:(NSInteger) value position:(NSInteger) position {
+- (void)insertColumnVirtualMatrix:(NSInteger) value position:(NSInteger) position {
     NSMutableArray *array = [[NSMutableArray alloc] init];
     for (int i = 0; i < value; i++) {
         [array addObject:@0];
@@ -173,7 +178,7 @@
     self.transform = CGAffineTransformRotate(currenttransform, angle);
 }
 
-- (double) whatIsTheSide: (CGPoint) point{
+- (double)whatIsTheSide: (CGPoint) point{
     if(point.x == 0 && point.y == 1) {
         return 0;
     } else if (point.x == 0 && point.y == -1) {
@@ -188,10 +193,9 @@
     }
 }
 
-
-
 - (void)startSmartVacuumCleanerBy:(PAMMapRoom*) mapRoom {
     NSArray *arrayWihtSide = [self checkArea:mapRoom];
+    [self saveVacuumCleanerInfo];
     if(arrayWihtSide.count) {
         int numberElement= (int)arc4random_uniform((int)arrayWihtSide.count);
         int move = [[arrayWihtSide objectAtIndex:numberElement] intValue];
@@ -200,12 +204,12 @@
                 [self.virtualMapRoom replaceElementAtRow:self.currentPoint.x column:self.currentPoint.y withElement:@(1)];
                 
                 CGPoint point = CGPointMake(0, -1);
-                [UIView animateWithDuration:0.2 animations:^{
+                [UIView animateWithDuration:self.speed animations:^{
                     [self turnTo:point];
                     self.lastPoint = self.currentPoint;
                     self.currentPoint = CGPointMake(self.currentPoint.x - 1, self.currentPoint.y);
                 } completion:^(BOOL finished) {
-                    [UIView animateWithDuration:0.2
+                    [UIView animateWithDuration:self.speed
                                      animations:^{
                                         [self moveTo:point];
                     }];
@@ -215,12 +219,12 @@
                 [self.virtualMapRoom replaceElementAtRow:self.currentPoint.x column:self.currentPoint.y withElement:@(1)];
                 
                 CGPoint point = CGPointMake(0, 1);
-                [UIView animateWithDuration:0.2 animations:^{
+                [UIView animateWithDuration:self.speed animations:^{
                     [self turnTo:point];
                     self.lastPoint = self.currentPoint;
                     self.currentPoint = CGPointMake(self.currentPoint.x + 1, self.currentPoint.y);
                 } completion:^(BOOL finished) {
-                    [UIView animateWithDuration:0.2
+                    [UIView animateWithDuration:self.speed
                                      animations:^{
                                          [self moveTo:point];
                                      }];
@@ -230,12 +234,12 @@
                 [self.virtualMapRoom replaceElementAtRow:self.currentPoint.x column:self.currentPoint.y withElement:@(1)];
                 
                 CGPoint point = CGPointMake(-1, 0);
-                [UIView animateWithDuration:0.2 animations:^{
+                [UIView animateWithDuration:self.speed animations:^{
                     [self turnTo:point];
                     self.lastPoint = self.currentPoint;
                     self.currentPoint = CGPointMake(self.currentPoint.x, self.currentPoint.y - 1);
                 } completion:^(BOOL finished) {
-                    [UIView animateWithDuration:0.2
+                    [UIView animateWithDuration:self.speed
                                      animations:^{
                                          [self moveTo:point];
                                      }];
@@ -245,12 +249,12 @@
                 [self.virtualMapRoom replaceElementAtRow:self.currentPoint.x column:self.currentPoint.y withElement:@(1)];
                 
                 CGPoint point = CGPointMake(1, 0);
-                [UIView animateWithDuration:0.2 animations:^{
+                [UIView animateWithDuration:self.speed animations:^{
                     [self turnTo:point];
                     self.lastPoint = self.currentPoint;
                     self.currentPoint = CGPointMake(self.currentPoint.x, self.currentPoint.y + 1);
                 } completion:^(BOOL finished) {
-                    [UIView animateWithDuration:0.2
+                    [UIView animateWithDuration:self.speed
                                      animations:^{
                                          [self moveTo:point];
                                      }];
@@ -265,8 +269,13 @@
     
 }
 
+#pragma mark - PAMVacuumCleanerDelegate
 
-
+- (void)saveVacuumCleanerInfo {
+    if(self.delegate && [self.delegate respondsToSelector:@selector(vacuumCleanerEnergy:degreeDirt:)]) {
+        [self.delegate performSelector:@selector(vacuumCleanerEnergy:degreeDirt:) withObject: @(self.energy) withObject: @(self.degreeDirt)];
+    }
+}
 
 
 
