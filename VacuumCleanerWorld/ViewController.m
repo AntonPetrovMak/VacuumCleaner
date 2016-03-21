@@ -62,12 +62,13 @@
     [self.mapView bringSubviewToFront:self.vacuumCleaner];
 }
 
-- (void)modeVacuumCleanerWorks{
-    self.barrierButton.userInteractionEnabled = !self.barrierButton.userInteractionEnabled;
-    self.dityButton.userInteractionEnabled = !self.dityButton.userInteractionEnabled;
-    self.energySlider.userInteractionEnabled = !self.energySlider.userInteractionEnabled;
-    self.speedSlider.userInteractionEnabled = !self.speedSlider.userInteractionEnabled;
-    self.startButton.userInteractionEnabled = !self.startButton.userInteractionEnabled;
+- (void)modeVacuumCleanerWorks:(BOOL) work{
+    self.barrierButton.userInteractionEnabled = work;
+    self.dityButton.userInteractionEnabled = work;
+    self.energySlider.userInteractionEnabled = work;
+    self.speedSlider.userInteractionEnabled = work;
+    self.startButton.userInteractionEnabled = work;
+    self.isSmartVCSwitch.userInteractionEnabled = work;
 }
 
 
@@ -76,8 +77,11 @@
     if(!self.time) {
         [self actionStopButton:self.stopButton];
     } else {
-        __weak ViewController *weakSelf = self;
-        [weakSelf.vacuumCleaner startSmartVacuumCleanerBy:weakSelf.mapRoom];
+        if(self.isSmartVCSwitch.isOn) {
+            [self.vacuumCleaner startSmartVacuumCleanerBy:self.mapRoom];
+        } else {
+            [self.vacuumCleaner startVacuumCleanerBy:self.mapRoom];
+        }
     }
 }
 
@@ -95,7 +99,7 @@
 }
 
 - (IBAction)actionStartButton:(UIButton *)sender {
-    [self modeVacuumCleanerWorks];
+    [self modeVacuumCleanerWorks: NO];
     self.time = self.energySlider.value;
     self.vacuumCleaner.virtualMapRoom = [[PVAlgebraMatrix alloc]initWithRows:3 columns:3 setDefaultValueForAllElements:0];
     self.vacuumCleaner.lastPoint = CGPointMake(2, 2);
@@ -103,6 +107,7 @@
     self.vacuumCleaner.degreeDirt = 0;
     self.vacuumCleaner.energy = self.energySlider.value;
     self.vacuumCleaner.speed = self.speedSlider.value;
+    [self.vacuumCleaner setBackgroundColor:[UIColor blackColor]];
     
     self.timer = [NSTimer scheduledTimerWithTimeInterval:self.vacuumCleaner.speed * 2
                                                   target:self
@@ -113,7 +118,8 @@
 }
 
 - (IBAction)actionStopButton:(UIButton *)sender {
-    [self modeVacuumCleanerWorks];
+    [self.vacuumCleaner setBackgroundColor:[UIColor blackColor]];
+    [self modeVacuumCleanerWorks:YES];
     [self.timer invalidate];
     [self.vacuumCleaner.layer removeAllAnimations];
     [UIView animateWithDuration:0.3

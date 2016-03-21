@@ -44,16 +44,30 @@
         self.energy--;
         return nil;
     } else {
+        PVAlgebraMatrix *sideVector = [[PVAlgebraMatrix alloc] initWithRows:1 columns:4 setDefaultValueForAllElements:-1];
         NSMutableArray *array = [NSMutableArray new];
         for (int i = 1; i < 5; i++) {
-            if([self isMoveToSide:i byMapRoom:environmentMap]) {
+            int result = [self isMoveToSide:i byMapRoom:environmentMap];
+            [sideVector replaceElementAtRow:1 column:i withElement:@(result)];
+        }
+        
+        int minValue = INT_MAX;
+        for (int i = 1; i < 5; i++) {
+            int numberOfVisited = [[sideVector elementAtRow:1 column:i] intValue];
+            if(numberOfVisited <= minValue && numberOfVisited != -1){
+                minValue = numberOfVisited;
+            }
+        }
+        for (int i = 1; i < 5; i++) {
+            int numberOfVisited = [[sideVector elementAtRow:1 column:i] intValue];
+            if(numberOfVisited == minValue) {
                 [array addObject:@(i)];
             }
         }
+        NSLog(@"%@", array);
         self.energy--;
         return array;
     }
-    
 }
 
 - (void)insertRowToVirtualMatrix:(NSInteger) value position:(NSInteger) position {
@@ -87,18 +101,17 @@
     }
 }
 
-- (BOOL)isMoveToSide:(PAMVacuumCleanerState) status byMapRoom:(PAMMapRoom*) environmentMap {
+- (int)isMoveToSide:(PAMVacuumCleanerState) status byMapRoom:(PAMMapRoom*) environmentMap {
     switch (status) {
         case PAMVacuumCleanerBack:
             if((self.currentPoint.x - 1) == 0) {
                 [self insertRowToVirtualMatrix:self.virtualMapRoom.numberOfRows position: 1];
             }
-
             if((self.center.y - CGRectGetMaxY(self.bounds)) >= CGRectGetMaxY(self.bounds) / 2) {
                 int i = (int)((CGRectGetMaxY(self.frame) - self.bounds.size.height) / 60);
                 int j = (int)(CGRectGetMaxX(self.frame) / 60);
                 if(![[environmentMap.mapRoomMatrix elementAtRow:i column:j] isEqualToNumber:@(-1)]) {
-                    return YES;
+                    return [[self.virtualMapRoom elementAtRow:self.currentPoint.x - 1 column: self.currentPoint.y] intValue];
                 } else {
                     [self.virtualMapRoom replaceElementAtRow:self.currentPoint.x - 1 column:self.currentPoint.y withElement:@(-1)];
                 }
@@ -115,7 +128,7 @@
                 int i = (int)((CGRectGetMaxY(self.frame) + self.bounds.size.height) / 60);
                 int j = (int)(CGRectGetMaxX(self.frame) / 60);
                 if(![[environmentMap.mapRoomMatrix elementAtRow:i column:j] isEqualToNumber:@(-1)]) {
-                    return YES;
+                    return [[self.virtualMapRoom elementAtRow:self.currentPoint.x + 1 column: self.currentPoint.y] intValue];
                 } else {
                     [self.virtualMapRoom replaceElementAtRow:self.currentPoint.x + 1 column:self.currentPoint.y withElement:@(-1)];
                 }
@@ -132,7 +145,7 @@
                 int i = (int)(CGRectGetMaxY(self.frame) / 60);
                 int j = (int)((CGRectGetMaxX(self.frame) - self.bounds.size.width) / 60);
                 if(![[environmentMap.mapRoomMatrix elementAtRow:i column:j] isEqualToNumber:@(-1)]) {
-                    return YES;
+                    return [[self.virtualMapRoom elementAtRow:self.currentPoint.x column: self.currentPoint.y - 1] intValue];
                 } else {
                     [self.virtualMapRoom replaceElementAtRow:self.currentPoint.x column:self.currentPoint.y - 1 withElement:@(-1)];
                 }
@@ -148,7 +161,7 @@
                 int i = (int)(CGRectGetMaxY(self.frame)/ 60);
                 int j = (int)((CGRectGetMaxX(self.frame) + self.bounds.size.width) / 60);
                 if(![[environmentMap.mapRoomMatrix elementAtRow:i column:j] isEqualToNumber:@(-1)]) {
-                    return YES;
+                    return [[self.virtualMapRoom elementAtRow:self.currentPoint.x column: self.currentPoint.y + 1] intValue];
                 } else {
                     [self.virtualMapRoom replaceElementAtRow:self.currentPoint.x column:self.currentPoint.y + 1 withElement:@(-1)];
                 }
@@ -157,10 +170,10 @@
             }
             break;
         default:
-            return NO;
+            return -1;
             break;
     }
-    return NO;
+    return -1;
 }
 
 - (void)moveTo:(CGPoint) point {
@@ -195,13 +208,13 @@
 
 - (void)startSmartVacuumCleanerBy:(PAMMapRoom*) mapRoom {
     NSArray *arrayWihtSide = [self checkArea:mapRoom];
-    [self saveVacuumCleanerInfo];
     if(arrayWihtSide.count) {
         int numberElement= (int)arc4random_uniform((int)arrayWihtSide.count);
         int move = [[arrayWihtSide objectAtIndex:numberElement] intValue];
+        int numberOfVisited = [[self.virtualMapRoom elementAtRow:self.currentPoint.x column:self.currentPoint.y] intValue];
+        [self.virtualMapRoom replaceElementAtRow:self.currentPoint.x column:self.currentPoint.y withElement:@(numberOfVisited + 1)];
         switch (move) {
             case PAMVacuumCleanerBack: {
-                [self.virtualMapRoom replaceElementAtRow:self.currentPoint.x column:self.currentPoint.y withElement:@(1)];
                 
                 CGPoint point = CGPointMake(0, -1);
                 [UIView animateWithDuration:self.speed animations:^{
@@ -216,7 +229,7 @@
                 }];
             } break;
             case PAMVacuumCleanerFront: {
-                [self.virtualMapRoom replaceElementAtRow:self.currentPoint.x column:self.currentPoint.y withElement:@(1)];
+               
                 
                 CGPoint point = CGPointMake(0, 1);
                 [UIView animateWithDuration:self.speed animations:^{
@@ -231,7 +244,7 @@
                 }];
             } break;
             case PAMVacuumCleanerLeft: {
-                [self.virtualMapRoom replaceElementAtRow:self.currentPoint.x column:self.currentPoint.y withElement:@(1)];
+               
                 
                 CGPoint point = CGPointMake(-1, 0);
                 [UIView animateWithDuration:self.speed animations:^{
@@ -246,7 +259,7 @@
                 }];
             } break;
             case PAMVacuumCleanerRight: {
-                [self.virtualMapRoom replaceElementAtRow:self.currentPoint.x column:self.currentPoint.y withElement:@(1)];
+                
                 
                 CGPoint point = CGPointMake(1, 0);
                 [UIView animateWithDuration:self.speed animations:^{
@@ -266,7 +279,7 @@
         }
         NSLog(@"Virtual Matrix: %@", self.virtualMapRoom);
     }
-    
+    [self saveVacuumCleanerInfo];
 }
 
 #pragma mark - PAMVacuumCleanerDelegate
@@ -278,55 +291,139 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-- (void)startVacuumCleanerBy:(PAMMapRoom*) mapRoom {
-    CGPoint newCenter = self.center;
-    
-    int move = (int)arc4random_uniform(4) + 1;
-    switch (move) {
-        case PAMVacuumCleanerBack:
-            if([self isMoveToSide:PAMVacuumCleanerBack byMapRoom:mapRoom]) {
-                newCenter.y += CGRectGetMaxY(self.bounds);
-            } else {
-                NSLog(@"limit y+");
+- (BOOL)checkDirt:(PAMMapRoom*) environmentMap {
+    NSInteger degreeDirt = [[environmentMap.mapRoomMatrix elementAtRow:self.currentPoint.x - 1 column:self.currentPoint.y - 1] integerValue];
+    if (degreeDirt > 0) {
+        self.backgroundColor = [UIColor greenColor];
+        if(!(degreeDirt - 1)) {
+            for (UIView *view in [environmentMap.mapView subviews]) {
+                UIView *dirtView = (UIView *)[environmentMap.mapDirtMatrix elementAtRow: self.currentPoint.x - 1 column:self.currentPoint.y - 1];
+                if([view isEqual:dirtView]) {
+                    [dirtView setBackgroundColor:[UIColor colorWithRed:157/255.f green:215/255.f blue:255/255.f alpha:1]];
+                    self.backgroundColor = [UIColor blackColor];
+                }
             }
-            break;
-        case PAMVacuumCleanerFront:
-            if([self isMoveToSide:PAMVacuumCleanerFront byMapRoom:mapRoom]) {
-                newCenter.y -= CGRectGetMaxY(self.bounds);
-            } else {
-                NSLog(@"limit y-");
-            }
-            break;
-        case PAMVacuumCleanerLeft:
-            if([self isMoveToSide:PAMVacuumCleanerLeft byMapRoom:mapRoom]) {
-                newCenter.x -= CGRectGetMaxX(self.bounds);
-            } else {
-                NSLog(@"limit x-");
-            }
-            
-            break;
-        case PAMVacuumCleanerRight:
-            if([self isMoveToSide:PAMVacuumCleanerRight byMapRoom:mapRoom]) {
-                newCenter.x += CGRectGetMaxX(self.bounds);
-            } else {
-                NSLog(@"limit x+");
-            }
-            
-            break;
-        default:
-            
-            break;
+        }
+        [environmentMap.mapRoomMatrix replaceElementAtRow:self.currentPoint.x - 1 column:self.currentPoint.y - 1 withElement:@(degreeDirt - 1)];
+        self.degreeDirt++;
+        self.energy--;
+        return YES;
+    } else {
+        self.energy--;
+        return NO;
     }
-    self.center = newCenter;
+}
+
+- (void)startVacuumCleanerBy:(PAMMapRoom*) environmentMap {
+    [self saveVacuumCleanerInfo];
+    if(![self checkDirt:environmentMap]) {
+        int move = (int)arc4random_uniform(4) + 1;
+        [self setBackgroundColor:[UIColor blackColor]];
+        switch (move) {
+            case PAMVacuumCleanerBack: {
+                CGPoint point = CGPointMake(0, -1);
+                [UIView animateWithDuration:self.speed animations:^{
+                    [self turnTo:point];
+                    
+                    self.lastPoint = CGPointMake(self.currentPoint.x + 1, self.currentPoint.y);
+                } completion:^(BOOL finished) {
+                    [UIView animateWithDuration:self.speed
+                                     animations:^{
+                                         if((self.center.y - CGRectGetMaxY(self.bounds)) >= CGRectGetMaxY(self.bounds) / 2) {
+                                             int i = (int)((CGRectGetMaxY(self.frame) - self.bounds.size.height) / 60);
+                                             int j = (int)(CGRectGetMaxX(self.frame) / 60);
+                                             if(![[environmentMap.mapRoomMatrix elementAtRow:i column:j] isEqualToNumber:@(-1)]) {
+                                                 self.lastPoint = self.currentPoint;
+                                                 self.currentPoint = CGPointMake(self.currentPoint.x - 1, self.currentPoint.y);
+                                                 [self moveTo:point];
+                                             } else {
+                                                 [self setBackgroundColor:[UIColor redColor]];
+                                             }
+                                         } else {
+                                             [self setBackgroundColor:[UIColor redColor]];
+                                         }
+                                     }];
+                }];
+            } break;
+            case PAMVacuumCleanerFront: {
+                CGPoint point = CGPointMake(0, 1);
+                [UIView animateWithDuration:self.speed animations:^{
+                    [self turnTo:point];
+                    self.lastPoint = CGPointMake(self.currentPoint.x - 1, self.currentPoint.y);
+                } completion:^(BOOL finished) {
+                    [UIView animateWithDuration:self.speed
+                                     animations:^{
+                                         if((self.center.y + CGRectGetMaxY(self.bounds)) <= environmentMap.mapRoomMatrix.numberOfColumns * 60 - CGRectGetMaxY(self.bounds) / 2) {
+                                             int i = (int)((CGRectGetMaxY(self.frame) + self.bounds.size.height) / 60);
+                                             int j = (int)(CGRectGetMaxX(self.frame) / 60);
+                                             if(![[environmentMap.mapRoomMatrix elementAtRow:i column:j] isEqualToNumber:@(-1)]) {
+                                                 self.lastPoint = self.currentPoint;
+                                                 self.currentPoint = CGPointMake(self.currentPoint.x + 1, self.currentPoint.y);
+                                                 [self moveTo:point];
+                                             } else {
+                                                 [self setBackgroundColor:[UIColor redColor]];
+                                             }
+                                         } else {
+                                             [self setBackgroundColor:[UIColor redColor]];
+                                         }
+                                     }];
+                }];
+            } break;
+            case PAMVacuumCleanerLeft: {
+                CGPoint point = CGPointMake(-1, 0);
+                [UIView animateWithDuration:self.speed animations:^{
+                    [self turnTo:point];
+                    self.lastPoint = CGPointMake(self.currentPoint.x , self.currentPoint.y + 1);
+                } completion:^(BOOL finished) {
+                    [UIView animateWithDuration:self.speed
+                                     animations:^{
+                                         if((self.center.x - CGRectGetMaxX(self.bounds)) >= CGRectGetMaxX(self.bounds) / 2) {
+                                             int i = (int)(CGRectGetMaxY(self.frame) / 60);
+                                             int j = (int)((CGRectGetMaxX(self.frame) - self.bounds.size.width) / 60);
+                                             if(![[environmentMap.mapRoomMatrix elementAtRow:i column:j] isEqualToNumber:@(-1)]) {
+                                                 self.lastPoint = self.currentPoint;
+                                                 self.currentPoint = CGPointMake(self.currentPoint.x, self.currentPoint.y - 1);
+                                                 [self moveTo:point];
+                                             } else {
+                                                 [self setBackgroundColor:[UIColor redColor]];
+                                             }
+                                         } else {
+                                             [self setBackgroundColor:[UIColor redColor]];
+                                         }
+                                         
+                                     }];
+                }];
+            } break;
+            case PAMVacuumCleanerRight: {
+                CGPoint point = CGPointMake(1, 0);
+                [UIView animateWithDuration:self.speed animations:^{
+                    [self turnTo:point];
+                    self.lastPoint = CGPointMake(self.currentPoint.x , self.currentPoint.y - 1);
+                } completion:^(BOOL finished) {
+                    [UIView animateWithDuration:self.speed
+                                     animations:^{
+                                         if((self.center.x + CGRectGetMaxX(self.bounds)) <= environmentMap.mapRoomMatrix.numberOfColumns * 60  - CGRectGetMaxX(self.bounds) / 2) {
+                                             int i = (int)(CGRectGetMaxY(self.frame)/ 60);
+                                             int j = (int)((CGRectGetMaxX(self.frame) + self.bounds.size.width) / 60);
+                                             if(![[environmentMap.mapRoomMatrix elementAtRow:i column:j] isEqualToNumber:@(-1)]) {
+                                                 self.lastPoint = self.currentPoint;
+                                                 self.currentPoint = CGPointMake(self.currentPoint.x, self.currentPoint.y + 1);
+                                                 [self moveTo:point];
+                                             } else {
+                                                 [self setBackgroundColor:[UIColor redColor]];
+                                             }
+                                         } else {
+                                             [self setBackgroundColor:[UIColor redColor]];
+                                         }
+                                     }];
+                }];
+            } break;
+            default:
+                NSLog(@"PAMVacuumCleanerNoOp");
+                break;
+        }
+        NSLog(@"Virtual Matrix: %@", self.virtualMapRoom);
+    }
 }
 
 @end
