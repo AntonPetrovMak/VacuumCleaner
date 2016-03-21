@@ -15,20 +15,14 @@ typedef enum : NSUInteger {
     PAMVacuumCleanerFront   = 1,
     PAMVacuumCleanerBack    = 2,
     PAMVacuumCleanerLeft    = 3,
-    PAMVacuumCleanerRight   = 4,
-    PAMVacuumCleanerSuck    = 5
+    PAMVacuumCleanerRight   = 4
 } PAMVacuumCleanerState;
 
 
-typedef enum : NSUInteger {
-    PAMRotateUp     = 0,
-    PAMRotateRight  = 90,
-    PAMRotateDown   = 180,
-    PAMRotateLeft   = -90
-} PAMRotate;
-
 @interface PAMVacuumCleaner : UIView
 
+
+@property(assign, nonatomic) double speed;
 @property(assign, nonatomic) CGRect beginPosition;
 @property(strong, nonatomic) PVAlgebraMatrix *virtualMapRoom;
 

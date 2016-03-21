@@ -16,4 +16,7 @@
 @property(strong, nonatomic) PVAlgebraMatrix *mapRoomMatrix;
 @property(strong, nonatomic) PVAlgebraMatrix *mapDirtMatrix;
 
+- (void)randomMatrixWithBarrier;
+- (void)randomMatrixWithDirt;
+
 @end

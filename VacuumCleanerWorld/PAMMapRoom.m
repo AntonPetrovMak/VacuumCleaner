@@ -14,14 +14,16 @@
 {
     self = [super init];
     if (self) {
-        [self standrtMapRoomMatrix];
-        //[self randomMapRoomMatrix];
+        self.mapRoomMatrix = [[PVAlgebraMatrix alloc] initWithRows:12 columns:12 setDefaultValueForAllElements:0];
+        self.mapDirtMatrix = [[PVAlgebraMatrix alloc] initWithRows:12 columns:12 setDefaultValueForAllElements:0];
+        //[self standrtMapRoomMatrix];
+        [self randomMatrixWithBarrier];
     }
     return self;
 }
 
 
-- (void) standrtMapRoomMatrix {
+- (void)standrtMapRoomMatrix {
     self.mapRoomMatrix = [[PVAlgebraMatrix alloc] initWithRows:12 columns:12 setDefaultValueForAllElements:0];
     self.mapDirtMatrix = [[PVAlgebraMatrix alloc] initWithRows:12 columns:12 setDefaultValueForAllElements:0];
     [self.mapRoomMatrix replaceElementAtRow:10  column:4 withElement:@(-1)];
@@ -76,7 +78,7 @@
     //[self randomMatrixWithDirt];
 }
 
-- (void) randomMapRoomMatrix {
+- (void)randomMatrixWithBarrier {
     self.mapRoomMatrix = [[PVAlgebraMatrix alloc] initWithRows:12 columns:12 setDefaultValueForAllElements:0];
     NSInteger row;
     NSInteger column;
@@ -94,7 +96,19 @@
     NSLog(@"\n%@", str);
 }
 
-- (void) randomMatrixWithDirt {
+- (void)clearDirtInRoom {
+    for (int i = 1; i <= self.mapRoomMatrix.numberOfColumns; i++) {
+        for (int j = 1; j <= self.mapRoomMatrix.numberOfRows; j++) {
+            if ([[self.mapRoomMatrix elementAtRow:i column:j] intValue] > 0) {
+                [self.mapRoomMatrix replaceElementAtRow:i column:j withElement:@0];
+            }
+        }
+    }
+}
+
+- (void)randomMatrixWithDirt {
+    [self clearDirtInRoom];
+    self.mapDirtMatrix = [[PVAlgebraMatrix alloc] initWithRows:12 columns:12 setDefaultValueForAllElements:0];
     NSInteger row;
     NSInteger column;
     NSInteger dirt;
@@ -108,7 +122,7 @@
             [self.mapRoomMatrix replaceElementAtRow:row column:column withElement:@(dirt)];
         }
     }
-     NSLog(@"\n%@", str);
+    NSLog(@"\n%@", str);
 }
 
 @end
