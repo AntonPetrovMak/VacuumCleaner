@@ -64,7 +64,7 @@
                 [array addObject:@(i)];
             }
         }
-        NSLog(@"%@", array);
+        //NSLog(@"%@", array);
         self.energy--;
         return array;
     }
@@ -278,6 +278,7 @@
                 break;
         }
         NSLog(@"Virtual Matrix: %@", self.virtualMapRoom);
+        [mapRoom changeTextOnLabelsWithVirtualMap:self.virtualMapRoom];
     }
     [self saveVacuumCleanerInfo];
 }

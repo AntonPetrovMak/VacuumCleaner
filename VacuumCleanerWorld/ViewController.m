@@ -30,8 +30,20 @@
     
     [self createMapWithBarrier];
     [self createMapWithDirty];
+    [self createLabelsOnMap];
+    [self.mapView bringSubviewToFront:self.vacuumCleaner];
     self.vacuumCleaner.beginPosition = self.vacuumCleaner.frame;
     //NSLog(@"%@",self.mapRoom.mapRoomMatrix);
+}
+
+- (void)createLabelsOnMap {
+    [self.mapRoom clearLabel];
+    for (int i = 1; i <= self.mapRoom.mapLabelMatrix.numberOfColumns; i++) {
+        for (int j = 1; j <= self.mapRoom.mapLabelMatrix.numberOfRows; j++) {
+            UILabel *lable = [self.mapRoom.mapLabelMatrix elementAtRow:i column:j];
+            [self.mapView addSubview:lable];
+        }
+    }
 }
 
 - (void)createMapWithBarrier {
@@ -59,7 +71,6 @@
             }
         }
     }
-    [self.mapView bringSubviewToFront:self.vacuumCleaner];
 }
 
 - (void)modeVacuumCleanerWorks:(BOOL) work{
@@ -100,6 +111,7 @@
 
 - (IBAction)actionStartButton:(UIButton *)sender {
     [self modeVacuumCleanerWorks: NO];
+    [self.mapRoom clearLabel];
     self.time = self.energySlider.value;
     self.vacuumCleaner.virtualMapRoom = [[PVAlgebraMatrix alloc]initWithRows:3 columns:3 setDefaultValueForAllElements:0];
     self.vacuumCleaner.lastPoint = CGPointMake(2, 2);
@@ -141,6 +153,8 @@
     [self.mapRoom randomMatrixWithBarrier];
     [self createMapWithBarrier];
     [self createMapWithDirty];
+    [self createLabelsOnMap];
+    [self.mapView bringSubviewToFront:self.vacuumCleaner];
 }
 
 - (IBAction)actionRandomDirt:(id)sender {
@@ -158,10 +172,15 @@
     
 }
 
+- (IBAction)actionShowVirtualMap:(UISwitch *)sender {
+    [self.mapRoom labelIsHidden:!sender.on];
+}
+
 #pragma mark - PAMVacuumCleanerInfo
 - (void) vacuumCleanerEnergy:(NSNumber *) energy degreeDirt:(NSNumber *) degreeDirt {
-    self.residualEnergyLabel.text = [NSString stringWithFormat:@"Residual energy: %d", [energy integerValue]];
-    self.degreeDirtLabel.text = [NSString stringWithFormat:@"Degree dirt: %d", [degreeDirt integerValue]];
+    self.residualEnergyLabel.text = [NSString stringWithFormat:@"Residual energy: %ld", (long)[energy integerValue]];
+    int percentDiry = (int)([degreeDirt integerValue] * 100)/self.mapRoom.degreeDirt;
+    self.degreeDirtLabel.text = [NSString stringWithFormat:@"Degree dirt: %ld/%ld (%d %%)", [degreeDirt integerValue], self.mapRoom.degreeDirt, percentDiry];
 }
 
 @end

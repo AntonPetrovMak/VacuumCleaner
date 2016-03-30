@@ -20,6 +20,7 @@
 @property (strong, nonatomic) PAMMapRoom *mapRoom;
 
 @property (strong, nonatomic) IBOutlet UISwitch *isSmartVCSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *isShowVirtualMap;
 
 @property (strong, nonatomic) IBOutlet UILabel *speedLabel;
 @property (strong, nonatomic) IBOutlet UILabel *initialEnergyLabel;
@@ -36,6 +37,7 @@
 - (IBAction)actionStopButton:(UIButton *)sender;
 - (IBAction)actionRandomBarrier:(id)sender;
 - (IBAction)actionRandomDirt:(id)sender;
+- (IBAction)actionShowVirtualMap:(UISwitch *)sender;
 
 
 @property (strong, nonatomic) IBOutlet PAMVacuumCleaner *vacuumCleaner;

@@ -15,6 +15,12 @@
 @property(strong, nonatomic) UIView *mapView;
 @property(strong, nonatomic) PVAlgebraMatrix *mapRoomMatrix;
 @property(strong, nonatomic) PVAlgebraMatrix *mapDirtMatrix;
+@property(strong, nonatomic) PVAlgebraMatrix *mapLabelMatrix;
+@property(assign, nonatomic) NSInteger degreeDirt;
+
+- (void)changeTextOnLabelsWithVirtualMap:(PVAlgebraMatrix *) virtualMap;
+- (void)clearLabel;
+- (void)labelIsHidden:(BOOL) hidden;
 
 - (void)randomMatrixWithBarrier;
 - (void)randomMatrixWithDirt;

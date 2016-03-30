@@ -16,12 +16,27 @@
     if (self) {
         self.mapRoomMatrix = [[PVAlgebraMatrix alloc] initWithRows:12 columns:12 setDefaultValueForAllElements:0];
         self.mapDirtMatrix = [[PVAlgebraMatrix alloc] initWithRows:12 columns:12 setDefaultValueForAllElements:0];
+        self.mapLabelMatrix = [[PVAlgebraMatrix alloc] initWithRows:12 columns:12 setDefaultValueForAllElements:0];
+        self.degreeDirt = 0;
         //[self standrtMapRoomMatrix];
+        [self createLabels];
         [self randomMatrixWithBarrier];
     }
     return self;
 }
 
+- (void)createLabels {
+    for (int i = 1; i <= 12; i++) {
+        for (int j = 1; j <= 12; j++) {
+            CGRect rect = CGRectMake(((j-1)*60) + 10, ((i-1)*60) + 20, 40, 20);
+            UILabel *label = [[UILabel alloc] initWithFrame:rect];
+            label.font = [UIFont fontWithName:@"Arial" size:18];
+            label.hidden = YES;
+            label.textAlignment = NSTextAlignmentCenter;
+            [self.mapLabelMatrix replaceElementAtRow:i column:j withElement:label];
+        }
+    }
+}
 
 - (void)standrtMapRoomMatrix {
     self.mapRoomMatrix = [[PVAlgebraMatrix alloc] initWithRows:12 columns:12 setDefaultValueForAllElements:0];
@@ -50,30 +65,6 @@
     [self.mapRoomMatrix replaceElementAtRow:6 column:6 withElement:@(-1)];
     [self.mapRoomMatrix replaceElementAtRow:4 column:11 withElement:@(-1)];
     [self.mapRoomMatrix replaceElementAtRow:8 column:7 withElement:@(-1)];
-    
-//    [self.mapRoomMatrix replaceElementAtRow:3 column:1 withElement:@(4)];
-//    [self.mapRoomMatrix replaceElementAtRow:3 column:2 withElement:@(4)];
-//    [self.mapRoomMatrix replaceElementAtRow:2 column:12 withElement:@(4)];
-//    [self.mapRoomMatrix replaceElementAtRow:3 column:9 withElement:@(1)];
-//    [self.mapRoomMatrix replaceElementAtRow:12 column:4 withElement:@(4)];
-//    [self.mapRoomMatrix replaceElementAtRow:12 column:8 withElement:@(5)];
-//    [self.mapRoomMatrix replaceElementAtRow:4 column:8 withElement:@(5)];
-//    [self.mapRoomMatrix replaceElementAtRow:4 column:12 withElement:@(4)];
-//    [self.mapRoomMatrix replaceElementAtRow:1 column:4 withElement:@(1)];
-//    [self.mapRoomMatrix replaceElementAtRow:5 column:3 withElement:@(4)];
-//    [self.mapRoomMatrix replaceElementAtRow:5 column:4 withElement:@(4)];
-//    [self.mapRoomMatrix replaceElementAtRow:8 column:8 withElement:@(4)];
-//    [self.mapRoomMatrix replaceElementAtRow:6 column:8 withElement:@(3)];
-//    [self.mapRoomMatrix replaceElementAtRow:5 column:8 withElement:@(5)];
-//    [self.mapRoomMatrix replaceElementAtRow:6 column:3 withElement:@(1)];
-//    [self.mapRoomMatrix replaceElementAtRow:7 column:8 withElement:@(2)];
-//    [self.mapRoomMatrix replaceElementAtRow:3 column:8 withElement:@(4)];
-//    [self.mapRoomMatrix replaceElementAtRow:12 column:5 withElement:@(4)];
-//    [self.mapRoomMatrix replaceElementAtRow:2 column:5 withElement:@(4)];
-//    [self.mapRoomMatrix replaceElementAtRow:11 column:9 withElement:@(2)];
-//    [self.mapRoomMatrix replaceElementAtRow:7 column:4 withElement:@(3)];
-//    [self.mapRoomMatrix replaceElementAtRow:12 column:2 withElement:@(2)];
-    //[self randomMatrixWithDirt];
 }
 
 - (void)randomMatrixWithBarrier {
@@ -85,7 +76,6 @@
     while (i > 0) {
         row = (NSInteger)arc4random_uniform(12) + 1;
         column = (NSInteger)arc4random_uniform(12) + 1;
-        NSLog(@"%d %d",row, column);
         if ([[self.mapRoomMatrix elementAtRow:row column:column]isEqualToNumber:@(0)] && !(row == 1 && column == 1)) {
             i --;
             str = [NSString stringWithFormat:@"%@ \n [self.mapRoomMatrix replaceElementAtRow:%ld column:%ld withElement:@(-1)];", str, (long)row, (long)column];
@@ -97,11 +87,30 @@
 }
 
 - (void)clearDirtInRoom {
+    self.degreeDirt = 0;
     for (int i = 1; i <= self.mapRoomMatrix.numberOfColumns; i++) {
         for (int j = 1; j <= self.mapRoomMatrix.numberOfRows; j++) {
             if ([[self.mapRoomMatrix elementAtRow:i column:j] intValue] > 0) {
                 [self.mapRoomMatrix replaceElementAtRow:i column:j withElement:@0];
             }
+        }
+    }
+}
+
+- (void)clearLabel {
+    for (int i = 1; i <= 12; i++) {
+        for (int j = 1; j <= 12; j++) {
+            UILabel *label = [self.mapLabelMatrix elementAtRow:i column:j];
+            label.text = @"";
+        }
+    }
+}
+
+- (void)labelIsHidden:(BOOL) hidden {
+    for (int i = 1; i <= 12; i++) {
+        for (int j = 1; j <= 12; j++) {
+            UILabel *label = [self.mapLabelMatrix elementAtRow:i column:j];
+            label.hidden = hidden;
         }
     }
 }
@@ -119,12 +128,25 @@
         column = (NSInteger)arc4random_uniform(12) + 1;
         dirt = (NSInteger)arc4random_uniform(5) + 1;
         if([[self.mapRoomMatrix elementAtRow:row column:column]isEqualToNumber:@(0)] && !(row == 1 && column == 1)) {
+            self.degreeDirt += dirt;
             i--;
-            str = [NSString stringWithFormat:@"%@ \n [self.mapRoomMatrix replaceElementAtRow:%ld column:%ld withElement:@(%d)];", str, (long)row, (long)column, dirt];
+            str = [NSString stringWithFormat:@"%@ \n [self.mapRoomMatrix replaceElementAtRow:%ld column:%ld withElement:@(%ld)];", str, (long)row, (long)column, dirt];
             [self.mapRoomMatrix replaceElementAtRow:row column:column withElement:@(dirt)];
         }
     }
-    NSLog(@"\n%@", str);
+    //NSLog(@"\n%@", str);
+}
+
+
+-(void)changeTextOnLabelsWithVirtualMap:(PVAlgebraMatrix *) virtualMap {
+    for (int i = 1; i <= virtualMap.numberOfRows; i++) {
+        for (int j = 1; j <= virtualMap.numberOfColumns; j++) {
+            if(i <= 12 && j <= 12) {
+                UILabel *label = [self.mapLabelMatrix elementAtRow:i column:j];
+                label.text = [[virtualMap elementAtRow:i+1 column:j+1] stringValue];
+            }
+        }
+    }
 }
 
 @end
